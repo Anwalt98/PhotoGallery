@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.os.Message
 import android.util.Log
 import androidx.lifecycle.Lifecycle
@@ -13,10 +14,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 private const val TAG = "ThumbnailDownloader"
 private const val MESSAGE_DOWNLOAD = 0
-class ThumbnailDownloader<in T>(private val responseHandler: Handler, private val onThumbnailDownloaded: (T, Bitmap) -> Unit)
-    : HandlerThread(TAG), LifecycleObserver {
-    val fragmentLifecycleObserver:
-            LifecycleObserver =
+class ThumbnailDownloader<in T>(private val responseHandler: Handler, private val onThumbnailDownloaded: (T, Bitmap) -> Unit) : HandlerThread(TAG), LifecycleObserver {
+    val fragmentLifecycleObserver: LifecycleObserver =
         object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
             fun setup() {
@@ -75,8 +74,7 @@ class ThumbnailDownloader<in T>(private val responseHandler: Handler, private va
                 return@Runnable
             }
             requestMap.remove(target)
-            onThumbnailDownloaded(target,
-                bitmap)
+            onThumbnailDownloaded(target, bitmap)
         })
     }
 }
