@@ -36,7 +36,7 @@ class DetailedImage : Fragment() {
     }
     override fun onCreateView(
         inflater: LayoutInflater,
-        container: ViewGroup?,
+        container: ViewGroup? ,
         savedInstanceState: Bundle?
     ): View? {
         lifecycle.addObserver(thumbnailDownloader.fragmentLifecycleObserver)
