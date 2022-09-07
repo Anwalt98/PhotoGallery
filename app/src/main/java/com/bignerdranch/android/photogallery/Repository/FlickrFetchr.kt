@@ -25,8 +25,8 @@ class FlickrFetchr  {
 
 
 
-    fun fetchPhotos(): LiveData<List<GalleryItem>> {
-        val responseLiveData: MutableLiveData<List<GalleryItem>> = MutableLiveData()
+    fun fetchPhotos(): LiveData<List<ItemPhoto>> {
+        val responseLiveData: MutableLiveData<List<ItemPhoto>> = MutableLiveData()
         val flickrRequest: Call<FlickrResponse> = flickrApi.fetchPhotos()
         flickrRequest.enqueue(object : Callback<FlickrResponse> {
             override fun onFailure(call: Call<FlickrResponse>, t: Throwable) {
@@ -36,7 +36,7 @@ class FlickrFetchr  {
                 Log.d(TAG, "Response received")
                 val flickrResponse: FlickrResponse? = response.body()
                 val photoResponse: PhotoResponse? = flickrResponse?.photos
-                var itemImages: List<GalleryItem> = photoResponse?.galleryItems ?: mutableListOf()
+                var itemImages: List<ItemPhoto> = photoResponse?.itemPhotos ?: mutableListOf()
                 itemImages =
                     itemImages.filterNot {
                         it.url.isBlank()

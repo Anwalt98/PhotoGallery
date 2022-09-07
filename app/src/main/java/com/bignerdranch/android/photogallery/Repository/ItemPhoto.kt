@@ -8,7 +8,7 @@ import java.util.*
 
 
 @Entity
-data class GalleryItem(
+data class ItemPhoto(
 
     @PrimaryKey
     @SerializedName("id")

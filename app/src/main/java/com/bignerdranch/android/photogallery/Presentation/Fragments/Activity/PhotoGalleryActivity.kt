@@ -6,10 +6,10 @@ import com.bignerdranch.android.photogallery.Presentation.Fragments.DetailedImag
 import com.bignerdranch.android.photogallery.Presentation.Fragments.PhotoGalleryFragment
 
 import com.bignerdranch.android.photogallery.R
-import com.bignerdranch.android.photogallery.Repository.GalleryItem
+import com.bignerdranch.android.photogallery.Repository.ItemPhoto
 
 
-class PhotoGalleryActivity : AppCompatActivity(), PhotoGalleryFragment.Callbacks {
+class PhotoGalleryActivity : AppCompatActivity(), PhotoGalleryFragment.Callbacks,DetailedImage.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_gallery)
@@ -21,8 +21,14 @@ class PhotoGalleryActivity : AppCompatActivity(), PhotoGalleryFragment.Callbacks
         }
     }
 
-    override fun onCrimeSelected(itemImage: GalleryItem) {
+    override fun onCrimeSelected(itemImage: ItemPhoto) {
         val fragment = DetailedImage.newInstance(itemImage)
         supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).addToBackStack(null).commit()
+    }
+
+    override fun onLikedSelected() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentContainer,PhotoGalleryFragment.newInstance(true)).addToBackStack(null).commit()
     }
 }

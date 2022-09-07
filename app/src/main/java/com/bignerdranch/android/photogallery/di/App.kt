@@ -2,6 +2,7 @@ package com.bignerdranch.android.photogallery.di
 
 import android.app.Application
 import android.content.Context
+import com.bignerdranch.android.photogallery.Repository.ItemPhotoRepository
 
 class App : Application() {
     lateinit var appComponent: AppComponent
@@ -17,5 +18,6 @@ class App : Application() {
         appComponent = DaggerAppComponent.builder()
             .appModule(AppModule())
             .build()
+        ItemPhotoRepository.initialize(this)
     }
 }
