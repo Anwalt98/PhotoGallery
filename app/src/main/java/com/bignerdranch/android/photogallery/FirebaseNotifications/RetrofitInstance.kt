@@ -9,8 +9,7 @@ class RetrofitInstance {
          .baseUrl(Constants.BASE_URL)
          .addConverterFactory(GsonConverterFactory.create())
          .build()}
-     val api by lazy { retrofit.create(NotificationAPI::class.java)
-     }
+     val api by lazy { retrofit.create(NotificationAPI::class.java) }
  }
 
 }
