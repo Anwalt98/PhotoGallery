@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PhotoGallery</string>
     <string name="liked">Liked</string>
+    <string name="gallery">Gallery</string>
 </resources>

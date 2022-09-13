@@ -27,18 +27,13 @@ import kotlin.properties.Delegates
 private const val TAG = "PhotoGalleryFragment"
 private const val ARG_PHOTO_URL = "photo_url"
 
-class PhotoGalleryFragment : Fragment() {
+class LikedImagesFragment : Fragment() {
 
 
-//    private var callbacks: Callbacks? = null
+
     private lateinit var photoGalleryViewModel: PhotoGalleryViewModel
     private lateinit var photoRecyclerView: RecyclerView
     private lateinit var thumbnailDownloader: ThumbnailDownloader<PhotoHolder>
-    private var code by Delegates.notNull<Boolean>()
-
-//    interface Callbacks {
-//        fun onCrimeSelected(itemPhoto: ItemPhoto)
-//    }
 
     override fun onCreate(
         savedInstanceState:
@@ -48,10 +43,6 @@ class PhotoGalleryFragment : Fragment() {
         photoGalleryViewModel = ViewModelProvider(this)[PhotoGalleryViewModel::class.java]
         val responseHandler = Handler()
 
-        code = when(arguments) {
-            null -> false
-            else -> arguments?.getSerializable(ARG_PHOTO_URL) as Boolean
-        }
         thumbnailDownloader = ThumbnailDownloader(responseHandler) { photoHolder, bitmap ->
             val drawable = BitmapDrawable(resources, bitmap)
             photoHolder.bindDrawable(drawable)
@@ -59,14 +50,6 @@ class PhotoGalleryFragment : Fragment() {
         lifecycle.addObserver(thumbnailDownloader.fragmentLifecycleObserver)
 
     }
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        callbacks = context as Callbacks?
-//    }
-//    override fun onDetach() {
-//        super.onDetach()
-//        callbacks = null
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,18 +72,15 @@ class PhotoGalleryFragment : Fragment() {
             savedInstanceState
         )
 
-        if (!code) {
-            photoGalleryViewModel.itemImageLiveData.observe(
-                viewLifecycleOwner, Observer { galleryItems ->
-                    photoRecyclerView.adapter = PhotoAdapter(galleryItems)
-
-                })
-        }
-        else   {photoGalleryViewModel.itemImageLikedLiveData.observe(
+       photoGalleryViewModel.itemImageLikedLiveData.observe(
             viewLifecycleOwner, Observer { galleryItems ->
                 photoRecyclerView.adapter = PhotoAdapter(galleryItems)
-             })
+            })
         }
+
+    override fun onPause() {
+        super.onPause()
+        retainInstance = false
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -112,11 +92,11 @@ class PhotoGalleryFragment : Fragment() {
         viewLifecycleOwner.lifecycle.removeObserver(thumbnailDownloader.viewLifecycleObserver)
     }
 
-private inner class PhotoHolder(private val itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView),View.OnClickListener  {
-    private lateinit var photo : ItemPhoto
-    init {
-        itemImageView.setOnClickListener(this)
-    }
+    private inner class PhotoHolder(private val itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView),View.OnClickListener  {
+        private lateinit var photo : ItemPhoto
+        init {
+            itemImageView.setOnClickListener(this)
+        }
         fun bindDrawable(drawable: Drawable) {
             itemImageView.setImageDrawable(drawable)
         }
@@ -124,15 +104,13 @@ private inner class PhotoHolder(private val itemImageView: ImageView) : Recycler
             this.photo = itemPhoto
         }
 
-    override fun onClick(v: View?) {
-
-//        callbacks?.onCrimeSelected(photo)
-
-        findNavController().navigate(R.id.detailedImage, bundleOf("KEY_DETAILED" to photo))
+        override fun onClick(v: View?) {
+//            findNavController().clearBackStack(R.id.detailedImage)
+            findNavController().navigate(R.id.detailedImage, bundleOf("KEY_DETAILED" to photo))
+        }
     }
-}
 
-private inner class PhotoAdapter(private val itemPhotos: List<ItemPhoto>) : RecyclerView.Adapter<PhotoHolder>() {
+    private inner class PhotoAdapter(private val itemPhotos: List<ItemPhoto>) : RecyclerView.Adapter<PhotoHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder {
             val view = layoutInflater.inflate(R.layout.list_item_gallery, parent, false) as ImageView
             return PhotoHolder(view)
@@ -146,17 +124,4 @@ private inner class PhotoAdapter(private val itemPhotos: List<ItemPhoto>) : Recy
             galleryItem.url?.let { thumbnailDownloader.queueThumbnail(holder, it) }
         }
     }
-
-    companion object {
-        fun newInstance(code: Boolean): PhotoGalleryFragment {
-            val args = Bundle().apply {
-                putSerializable(ARG_PHOTO_URL, code)
-            }
-            return PhotoGalleryFragment().apply {
-                arguments = args
-            }
-        }
-        fun newInstance() = PhotoGalleryFragment()
-    }
-
 }

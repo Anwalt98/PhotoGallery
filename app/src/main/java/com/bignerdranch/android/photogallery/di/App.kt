@@ -3,6 +3,7 @@ package com.bignerdranch.android.photogallery.di
 import android.app.Application
 import android.content.Context
 import com.bignerdranch.android.photogallery.Repository.ItemPhotoRepository
+import com.google.firebase.FirebaseApp
 
 class App : Application() {
     lateinit var appComponent: AppComponent
@@ -19,5 +20,6 @@ class App : Application() {
             .appModule(AppModule())
             .build()
         ItemPhotoRepository.initialize(this)
+        FirebaseApp.initializeApp(applicationContext);
     }
 }

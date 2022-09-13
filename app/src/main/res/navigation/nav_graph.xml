@@ -2,24 +2,36 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation">
-<!--    app:startDestination="@+id/navigation_home">-->
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_gallery">
+
+    <fragment
+        android:id="@+id/navigation_gallery"
+        android:name="com.bignerdranch.android.photogallery.Presentation.Fragments.PhotoGalleryFragment"
+        android:label="@string/liked"
+        tools:layout="@layout/fragment_photo_gallery" >
+        <action
+            android:id="@+id/action_navigation_gallery_to_navigation_liked"
+            app:destination="@id/navigation_liked" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_liked"
-        android:name="com.bignerdranch.android.photogallery.Presentation.Fragments.DetailedImage"
-        android:label="@string/liked"
-        tools:layout="@layout/fragment_photo_gallery" />
+        android:name="com.bignerdranch.android.photogallery.Presentation.Fragments.LikedImagesFragment"
+        android:label="@string/gallery"
+        tools:layout="@layout/fragment_liked_images" >
+        <action
+            android:id="@+id/action_navigation_liked_self"
+            app:destination="@id/navigation_liked" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailedImage"
+        android:name="com.bignerdranch.android.photogallery.Presentation.Fragments.DetailedImageFragment"
+        android:label="DetailedImage" >
+        <action
+            android:id="@+id/action_detailedImage_to_navigation_liked"
+            app:destination="@id/navigation_liked" />
+    </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_dashboard"-->
-<!--        android:name="com.bignerdranch.android.bottomnavtest.ui.dashboard.DashboardFragment"-->
-<!--        android:label="@string/title_dashboard"-->
-<!--        tools:layout="@layout/fragment_dashboard" />-->
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_notifications"-->
-<!--        android:name="com.bignerdranch.android.bottomnavtest.ui.notifications.NotificationsFragment"-->
-<!--        android:label="@string/title_notifications"-->
-<!--        tools:layout="@layout/fragment_notifications" />-->
 </navigation>

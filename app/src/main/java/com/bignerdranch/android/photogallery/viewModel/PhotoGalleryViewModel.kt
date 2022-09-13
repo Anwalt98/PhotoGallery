@@ -22,5 +22,8 @@ class PhotoGalleryViewModel : ViewModel() {
     fun getItemPhoto(id : String) : LiveData<ItemPhoto?>{
       return  itemPhotoRepository.getItemPhoto(id)
     }
+    fun deleteItemPhoto(photo: ItemPhoto) {
+        itemPhotoRepository.deleteItemPhoto(photo.id)
+    }
 
 }
