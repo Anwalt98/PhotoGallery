@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "13263733569",
+    "project_id": "photogallery-48026",
+    "storage_bucket": "photogallery-48026.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13263733569:android:f26229fc4b914e03c897c0",
+        "android_client_info": {
+          "package_name": "com.Anwalt98"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13263733569-5fku2omg544sm3sqoj2p54resr9sfbnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcf6kQFEkh5g714ZPPdWn6s3Bx_ki9x-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13263733569-5fku2omg544sm3sqoj2p54resr9sfbnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13263733569:android:cbd48e443927aeddc897c0",
+        "android_client_info": {
+          "package_name": "com.bignerdranch.android.photogallery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13263733569-5fku2omg544sm3sqoj2p54resr9sfbnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcf6kQFEkh5g714ZPPdWn6s3Bx_ki9x-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13263733569-5fku2omg544sm3sqoj2p54resr9sfbnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
