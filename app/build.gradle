@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx:23.0.8'
+    implementation platform('com.google.firebase:firebase-bom:30.4.1')
 
     //nav_controller
     def nav_version = "2.5.1"

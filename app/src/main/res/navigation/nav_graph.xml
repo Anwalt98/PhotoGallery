@@ -13,6 +13,12 @@
         <action
             android:id="@+id/action_navigation_gallery_to_navigation_liked"
             app:destination="@id/navigation_liked" />
+        <action
+            android:id="@+id/action_navigation_gallery_to_detailedImage"
+            app:destination="@id/detailedImage"
+            app:enterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -23,6 +29,9 @@
         <action
             android:id="@+id/action_navigation_liked_self"
             app:destination="@id/navigation_liked" />
+        <action
+            android:id="@+id/action_navigation_liked_to_detailedImage"
+            app:destination="@id/detailedImage" />
     </fragment>
     <fragment
         android:id="@+id/detailedImage"

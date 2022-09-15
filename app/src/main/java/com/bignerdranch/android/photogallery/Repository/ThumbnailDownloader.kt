@@ -7,40 +7,35 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.Message
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import java.util.concurrent.ConcurrentHashMap
 
 private const val TAG = "ThumbnailDownloader"
 private const val MESSAGE_DOWNLOAD = 0
-class ThumbnailDownloader<in T>(private val responseHandler: Handler, private val onThumbnailDownloaded: (T, Bitmap) -> Unit) : HandlerThread(TAG), LifecycleObserver {
-    val fragmentLifecycleObserver: LifecycleObserver =
-        object : LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-            fun setup() {
-                Log.i(TAG, "Starting background thread")
-                        start()
-                        looper
-            }
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun tearDown() {
-                Log.i(TAG, "Destroying background thread")
-                quit()
-            }
+class ThumbnailDownloader<in T : Any>(private val responseHandler: Handler, private val onThumbnailDownloaded: (T, Bitmap) -> Unit) : HandlerThread(TAG), LifecycleObserver {
+    val fragmentLifecycleObserver: DefaultLifecycleObserver = object : DefaultLifecycleObserver {
+        override fun onCreate(owner: LifecycleOwner) {
+            Log.i(TAG, "Starting background thread")
+            start()
+            looper
         }
-    val viewLifecycleObserver:
-            LifecycleObserver =
-        object : LifecycleObserver {
+
+        override fun onDestroy(owner: LifecycleOwner) {
+            Log.i(TAG, "Destroying background thread")
+            quit()
+        }
+
+    }
+    val viewLifecycleObserver = object : DefaultLifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
             fun clearQueue() {
                 Log.i(TAG, "Clearing all requests from queue")
-                        requestHandler.removeMessages(MESSAGE_DOWNLOAD)
+                requestHandler?.removeMessages(MESSAGE_DOWNLOAD)
                         requestMap.clear()
             }
         }
     private var hasQuit = false
-    private lateinit var requestHandler: Handler
+    private var requestHandler: Handler? = null
     private val requestMap = ConcurrentHashMap<T, String>()
     private val flickrFetchr = FlickrFetchr()
     @Suppress("UNCHECKED_CAST")
@@ -64,7 +59,7 @@ class ThumbnailDownloader<in T>(private val responseHandler: Handler, private va
     fun queueThumbnail(target: T, url: String) {
         Log.i(TAG, "Got a URL: $url")
         requestMap[target] = url
-        requestHandler.obtainMessage(MESSAGE_DOWNLOAD, target).sendToTarget()
+        requestHandler?.obtainMessage(MESSAGE_DOWNLOAD, target)?.sendToTarget()
     }
     private fun handleRequest(target: T) {
         val url = requestMap[target] ?: return

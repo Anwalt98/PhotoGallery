@@ -1,6 +1,7 @@
 package com.bignerdranch.android.photogallery.Presentation.Fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -44,6 +45,7 @@ class LikedImagesFragment : Fragment() {
         val responseHandler = Handler()
 
         thumbnailDownloader = ThumbnailDownloader(responseHandler) { photoHolder, bitmap ->
+            photoHolder.bitmap = bitmap
             val drawable = BitmapDrawable(resources, bitmap)
             photoHolder.bindDrawable(drawable)
         }
@@ -94,6 +96,7 @@ class LikedImagesFragment : Fragment() {
 
     private inner class PhotoHolder(private val itemImageView: ImageView) : RecyclerView.ViewHolder(itemImageView),View.OnClickListener  {
         private lateinit var photo : ItemPhoto
+        lateinit var bitmap : Bitmap
         init {
             itemImageView.setOnClickListener(this)
         }
@@ -105,8 +108,10 @@ class LikedImagesFragment : Fragment() {
         }
 
         override fun onClick(v: View?) {
-//            findNavController().clearBackStack(R.id.detailedImage)
-            findNavController().navigate(R.id.detailedImage, bundleOf("KEY_DETAILED" to photo))
+            val bundle = if (this::bitmap.isInitialized) {
+                bundleOf("KEY_DETAILED" to photo, "BITMAP" to bitmap)
+            } else (bundleOf("KEY_DETAILED" to photo))
+            findNavController().navigate(R.id.detailedImage,bundle)
         }
     }
 
@@ -121,7 +126,7 @@ class LikedImagesFragment : Fragment() {
             val placeholder: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.default_img) ?: ColorDrawable()
             holder.bindDrawable(placeholder)
             holder.setPhotoInHolder(galleryItem)
-            galleryItem.url?.let { thumbnailDownloader.queueThumbnail(holder, it) }
+            thumbnailDownloader.queueThumbnail(holder, galleryItem.url)
         }
     }
 }

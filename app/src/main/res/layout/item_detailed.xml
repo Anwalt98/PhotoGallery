@@ -9,26 +9,24 @@
         android:id="@+id/detailed_image"
         android:src="@drawable/default_img"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6">
+        android:layout_height="400dp">
     </ImageView>
+    <TextView
+        android:layout_marginStart="10dp"
+        android:id="@+id/detailed_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
 
     <ImageButton
-        android:layout_weight="0.05"
+        android:layout_gravity="top"
         android:id="@+id/like_button"
         android:background="@color/white"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
-        android:layout_width="50dp"
-        android:layout_height="0dp">
+        android:layout_width="25dp"
+        android:layout_height="25dp">
     </ImageButton>
 
-<TextView
-    android:layout_marginStart="10dp"
-    android:id="@+id/detailed_description"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_weight="0.35">
-</TextView>
 
 </LinearLayout>
